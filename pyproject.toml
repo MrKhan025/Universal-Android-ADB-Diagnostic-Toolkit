@@ -1,0 +1,22 @@
+[project]
+name = "universal-android-adb-toolkit"
+version = "0.2.0"
+description = "Advanced Android ADB/Fastboot diagnostic toolkit with desktop wrapper and OEM safe-debloat tools"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "MrKhan025" }]
+
+[project.scripts]
+android-adb-toolkit = "universal_android_adb_toolkit.cli:main"
+android-adb-desktop = "universal_android_adb_toolkit.gui:main"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

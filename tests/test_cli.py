@@ -1,6 +1,6 @@
-import re
+import json
 
-from universal_android_adb_toolkit.cli import build_package_command, filter_logcat_output, log_priority_matches
+from universal_android_adb_toolkit.cli import build_package_command, filter_logcat_output, log_priority_matches, safe_removal_candidates
 
 
 def test_log_priority_matches():
@@ -27,3 +27,8 @@ def test_build_package_command_uses_disable_user_by_default():
 def test_build_package_command_for_uninstall():
     cmd = build_package_command("SERIAL-123", "com.example.app", remove=True)
     assert cmd == ["adb", "-s", "SERIAL-123", "shell", "pm", "uninstall", "--user", "0", "com.example.app"]
+
+
+def test_safe_removal_candidates():
+    packages = ["com.samsung.android.messaging", "com.google.android.apps.translate", "com.example.app"]
+    assert safe_removal_candidates(package_list=packages) == ["com.google.android.apps.translate", "com.samsung.android.messaging"]

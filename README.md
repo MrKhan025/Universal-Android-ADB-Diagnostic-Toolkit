@@ -1,30 +1,37 @@
 # Universal Android / ADB Diagnostic Toolkit
 
-A lightweight Python command-line toolkit for Android device diagnostics, ADB/Fastboot health checks, log collection, and safe package debloating.
+A lightweight yet advanced Android device diagnostics and safe debloating toolkit built in Python. It integrates CLI tooling, a lightweight desktop wrapper, OEM-safe package detection, battery diagnostics, storage snapshotting, and secure package removal workflows.
 
 ## Features
 
-- ADB and Fastboot environment validation
-- Connected device detection and serial selection
-- Android build, model, SDK, and security-patch reporting
-- Battery health, voltage, temperature, and level checks
-- Logcat filtering by keyword, tag, priority, and PID
-- Discovered app package listings, including third-party packages
-- Safe debloating with `pm disable-user --user 0` by default
-- Optional package removal and restore commands
-- JSON output for automation and scripting
-- CI coverage on Python 3.10–3.13
+- ADB and Fastboot installation checks
+- Connected-device detection and serial selection
+- Android version, model, build, and security patch reporting
+- Battery health, temperature, voltage, and level analysis
+- Storage and memory snapshot reporting
+- Logcat filtering by priority, tag, text, and PID
+- Third-party package discovery and app inventory
+- Curated OEM-safe bloatware detection list
+- Safe `pm disable-user --user 0` disable workflow by default
+- Optional package removal and restoration
+- JSON output for automation and CI
+- Desktop Tkinter wrapper for quick diagnostics
+- GitHub Actions testing on Python 3.10 through 3.13
+- Windows packaging helper for PyInstaller build automation
 
 ## Project layout
 
-- `src/universal_android_adb_toolkit/cli.py` – main CLI implementation
-- `tests/test_cli.py` – automated tests
-- `.github/workflows/ci.yml` – GitHub Actions CI
-- `pyproject.toml` – packaging and script metadata
+- `src/universal_android_adb_toolkit/cli.py` – command-line toolkit
+- `src/universal_android_adb_toolkit/gui.py` – lightweight desktop interface
+- `src/universal_android_adb_toolkit/bloatware.py` – curated OEM safe-debloat package list
+- `scripts/build_windows_installer.py` – Windows build automation
+- `tests/test_cli.py` – automated regression tests
+- `.github/workflows/ci.yml` – CI pipeline
+- `pyproject.toml` – Python packaging metadata
 
 ## Quick start
 
-### 1) Install locally
+### Install locally
 
 ```bash
 python -m venv .venv
@@ -33,68 +40,68 @@ pip install -U pip
 pip install -e .
 ```
 
-### 2) Verify ADB/Fastboot
+### CLI usage
 
 ```bash
 android-adb-toolkit doctor
-```
-
-### 3) View connected devices
-
-```bash
 android-adb-toolkit devices
-```
-
-### 4) Collect a device report
-
-```bash
 android-adb-toolkit report --serial <SERIAL>
-```
-
-### 5) Read battery health
-
-```bash
 android-adb-toolkit battery --serial <SERIAL>
-```
-
-### 6) Filter logcat output
-
-```bash
 android-adb-toolkit logcat --serial <SERIAL> --tag ActivityManager --priority W --pattern crash
-```
-
-### 7) List third-party applications
-
-```bash
 android-adb-toolkit packages --serial <SERIAL> --third-party
-```
-
-### 8) Safely disable a package
-
-```bash
 android-adb-toolkit remove com.example.app --serial <SERIAL> --dry-run
-android-adb-toolkit remove com.example.app --serial <SERIAL>
+android-adb-toolkit dashboard --serial <SERIAL>
+android-adb-toolkit desktop
 ```
 
-### 9) Restore a disabled package
+### Desktop UI
+
+Launch the lightweight desktop wrapper:
 
 ```bash
-android-adb-toolkit restore com.example.app --serial <SERIAL>
+android-adb-desktop
 ```
+
+This opens a Tkinter-based dashboard for:
+- device selection
+- battery health summary
+- storage snapshot
+- package inventory
+- OEM-safe bloatware suggestions
+- logcat output preview
 
 ## Safety guidance
 
-- The default removal mode is `disable-user` for user 0, which is safer than uninstalling system apps.
-- Use `--dry-run` before applying changes.
-- Use `--remove` only when you are sure the application should be removed.
-- Always confirm package names and device selection before running removal commands.
+- Default removal is `pm disable-user --user 0` for safety.
+- Use `--dry-run` before any package changes.
+- Use `--remove` only when you understand the consequences.
+- Always validate package names before disabling system apps.
+- Recommended to review OEM-curated suggestions before executing removal.
 
-## JSON output example
+## Curated safe-removal candidates
+
+The toolkit compares installed packages against a curated package list covering common OEM and carrier bloatware patterns such as:
+
+- `com.android.chrome` (optional)
+- `com.google.android.apps.messaging` (optional, if replacing app)
+- `com.samsung.android.app.watchmanager` (device-specific)
+- `com.huawei.android.hsf` (device-specific)
+- `com.oneplus.mms`
+- `com.miui.cleanmaster`
+- carrier-specific diagnostic apps
+
+These are suggestions only. Always review device-specific package names before removing anything.
+
+## Windows installer packaging
+
+To build a Windows executable using PyInstaller:
 
 ```bash
-android-adb-toolkit report --serial <SERIAL> --json
+python scripts/build_windows_installer.py
 ```
+
+This script creates a bundled executable in a `dist/` directory.
 
 ## License
 
-This project is licensed under the MIT License.
+MIT
