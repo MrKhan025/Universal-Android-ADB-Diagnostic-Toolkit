@@ -1,0 +1,22 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+installer/output/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Runtime state & test artifacts
+.adb_toolkit_approvals.json
+.pytest_cache/
+.coverage
+htmlcov/
