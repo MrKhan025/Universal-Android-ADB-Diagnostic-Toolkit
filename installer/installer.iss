@@ -1,6 +1,6 @@
 [Setup]
 AppName=Universal Android ADB Diagnostic Toolkit
-AppVersion=0.2.0
+AppVersion=0.3.0
 DefaultDirName={userpf}\Universal Android ADB Diagnostic Toolkit
 DefaultGroupName=Universal Android ADB Diagnostic Toolkit
 OutputDir=.\output
