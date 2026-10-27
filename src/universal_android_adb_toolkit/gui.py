@@ -61,7 +61,8 @@ except ImportError:
 class AndroidDiagnosticsApp:
     def __init__(self, root: tk.Tk) -> None:
         self.root = root
-        self.root.title("Universal Android / ADB Diagnostic Toolkit")
+        from . import __version__
+        self.root.title(f"Universal Android / ADB Diagnostic Toolkit v{__version__}")
         self.root.geometry("1120x780")
         self.root.minsize(980, 680)
         self.root.protocol("WM_DELETE_WINDOW", self.on_close)

@@ -14,6 +14,7 @@ def build_report_snapshot(serial: str) -> Dict[str, Any]:
     """Collect a comprehensive diagnostic snapshot for a connected device."""
     report = device_report(serial)
     battery = report.get("battery", {})
+    # Prefer package_count already collected; only re-list when needed for CSV export
     packages = list_packages(serial, third_party_only=False)
     return {
         "serial": serial,
@@ -21,6 +22,9 @@ def build_report_snapshot(serial: str) -> Dict[str, Any]:
         "device": report,
         "battery": battery,
         "packages": packages,
+        "package_count": len(packages),
+        "cpu_thermal": report.get("cpu_thermal"),
+        "network": report.get("network"),
     }
 
 
