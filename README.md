@@ -8,7 +8,7 @@
 
 > **Diagnose, inspect, monitor, and safely debloat any Android device over ADB & Fastboot—from a scriptable CLI or a lightweight desktop dashboard.**
 
-**Universal Android / ADB Diagnostic Toolkit** is a zero-bloat Python toolkit engineered for developers, QA engineers, repair technicians, and Android power users. It combines deep hardware/OS telemetry, real-time logcat filtering, multi-format diagnostic reporting, and a safety-first OEM debloating workflow that protects critical system components from accidental removal.
+**Universal Android / ADB Diagnostic Toolkit** is a zero-bloat Python toolkit (v0.4.0) engineered for developers, QA engineers, repair technicians, and Android power users. It combines deep hardware/OS telemetry, real-time logcat filtering, multi-format diagnostic reporting, and a safety-first OEM debloating workflow that protects critical system components from accidental removal.
 
 ## ✨ Why Use This Toolkit?
 
@@ -71,6 +71,20 @@ Every CLI subcommand supports `--json` for machine-readable output in CI/CD pipe
 | `fastboot` | `--json` | Lists devices currently connected in Fastboot bootloader mode. | `android-adb-toolkit fastboot` |
 | `export` | `--format`, `--output`, `--serial` | Exports a full diagnostic snapshot to `json`, `html`, or `csv`. | `android-adb-toolkit export --format html --output report.html` |
 | `desktop` | `--json` | Opens the Tkinter desktop diagnostic application. | `android-adb-toolkit desktop` |
+| `version` | `--json` | Print toolkit version. | `android-adb-toolkit version` |
+| `props` | `--serial`, `--json` | Dump key `getprop` system properties. | `android-adb-toolkit props` |
+| `cpu` | `--serial`, `--json` | CPU cores online, load average, thermal zones. | `android-adb-toolkit cpu` |
+| `network` | `--serial`, `--json` | Wi-Fi / IP summary. | `android-adb-toolkit network` |
+| `screenshot` | `--serial`, `--output`, `--json` | Capture PNG screenshot via screencap. | `android-adb-toolkit screenshot -o shot.png` |
+| `install` | `apk`, `--serial`, `--no-replace`, `--json` | Install an APK (`-r` by default). | `android-adb-toolkit install app.apk` |
+| `clear` | `package`, `--serial`, `--json` | Force-stop + clear cache only (safe). | `android-adb-toolkit clear com.example.app` |
+| `reboot` | `--serial`, `--mode`, `--json` | Reboot system / recovery / bootloader. | `android-adb-toolkit reboot --mode recovery` |
+| `tcpip` | `--serial`, `--port`, `--json` | Enable ADB over TCP/IP. | `android-adb-toolkit tcpip --port 5555` |
+| `connect` | `host`, `--port`, `--json` | Connect to wireless ADB device. | `android-adb-toolkit connect 192.168.1.20` |
+| `disconnect` | `[host]`, `--json` | Disconnect wireless device(s). | `android-adb-toolkit disconnect` |
+| `package-info` | `package`, `--serial`, `--json` | Version, path, installer, disabled state. | `android-adb-toolkit package-info com.example` |
+| `bugreport` | `--serial`, `--output`, `--json` | Capture full Android bugreport zip. | `android-adb-toolkit bugreport -o br.zip` |
+| `approvals` | `--list`, `--execute`, `--clear`, `--dry-run` | Manage staged safety approval manifest. | `android-adb-toolkit approvals --list` |
 
 ### Common CLI Workflows
 
@@ -131,13 +145,16 @@ Removing the wrong system package on Android can cause bootloops, broken notific
 | **Huawei / EMUI** | `com.huawei.android.hsf`, `com.huawei.android.thememanager`, `com.huawei.himovie.overseas`, `com.huawei.health`, `com.huawei.appmarket` |
 | **OnePlus / OxygenOS** | `com.oneplus.mms`, `com.oneplus.opbugreport`, `com.oneplus.LogKit`, `com.oneplus.brickmode`, `net.oneplus.forums` |
 | **Carrier & Preloads** | `com.google.android.apps.nbu.files`, `com.facebook.system`, `com.facebook.appmanager`, `com.facebook.services`, `com.Netflix.mediaclient`, `com.spotify.music` |
+| **Oppo / Realme / ColorOS** | `com.coloros.gamespace`, `com.heytap.market`, `com.oplus.games`, `com.oppo.community`, `com.realme.logtool` |
+| **Vivo** | `com.vivo.browser`, `com.vivo.gamewatch`, `com.bbk.cloud`, `com.iqoo.secure`, `com.vivo.easyshare` |
+| **Motorola** | `com.motorola.demo`, `com.motorola.moto`, `com.motorola.timeweatherwidget`, `com.motorola.help` |
 
 ## 🗂️ Project Architecture
 
 ```text
 Universal-Android-ADB-Diagnostic-Toolkit-main/
 ├── .github/workflows/
-│   └── ci.yml                          # GitHub Actions matrix (Python 3.10 – 3.13)
+│   └── python-app.yml                   # GitHub Actions matrix (Python 3.10 – 3.13)
 ├── installer/
 │   └── installer.iss                   # Inno Setup Windows installer configuration
 ├── scripts/
@@ -184,3 +201,7 @@ python scripts/build_windows_installer.py
 ## 📄 License
 
 Distributed under the **MIT License**. See `LICENSE` for full license text.
+
+## 🤝 Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, testing, and PR guidelines.

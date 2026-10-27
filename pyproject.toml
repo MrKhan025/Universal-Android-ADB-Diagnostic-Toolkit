@@ -1,6 +1,6 @@
 [project]
 name = "universal-android-adb-toolkit"
-version = "0.3.0"
+version = "0.4.0"
 description = "Advanced Android ADB/Fastboot diagnostic toolkit with desktop wrapper and OEM safe-debloat tools"
 readme = "README.md"
 requires-python = ">=3.10"
