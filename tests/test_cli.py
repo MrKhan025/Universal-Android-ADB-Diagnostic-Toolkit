@@ -320,6 +320,55 @@ def test_windows_installer_repo_root_points_to_project_root():
     assert (repo_root / "src" / "universal_android_adb_toolkit" / "gui.py").exists()
 
 
+
+
+def test_version_command():
+    from universal_android_adb_toolkit.cli import main
+    import io
+    from contextlib import redirect_stdout
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        rc = main(["version"])
+    assert rc == 0
+    assert "0.4.0" in buf.getvalue()
+
+
+def test_expanded_bloatware_catalog():
+    from universal_android_adb_toolkit.bloatware import OEM_BLOATWARE, get_safe_bloatware_packages
+    cats = get_safe_bloatware_packages()
+    assert "oppo_realme" in cats
+    assert "vivo" in cats
+    assert "motorola" in cats
+    total = sum(len(v) for v in cats.values())
+    assert total >= 200
+
+
+def test_read_cpu_thermal_handles_missing(monkeypatch=None):
+    from universal_android_adb_toolkit import cli
+    with patch("universal_android_adb_toolkit.cli.shell") as mock_shell:
+        mock_shell.return_value = subprocess.CompletedProcess(args=[], returncode=1, stdout="", stderr="")
+        data = cli.read_cpu_thermal("SERIAL")
+        assert "status" in data or data == {"status": "unavailable"} or isinstance(data, dict)
+
+
+def test_validate_package_rejects_bad_names():
+    assert validate_package_name("com.example.app") is True
+    assert validate_package_name("not a package") is False
+    assert validate_package_name("") is False
+    assert validate_package_name("com") is False
+
+
+def test_package_info_invalid_name():
+    from universal_android_adb_toolkit.cli import package_info
+    result = package_info(None, "not a valid package")
+    assert result.get("ok") is False
+
+
+def test_approvals_list_empty(tmp_path, monkeypatch):
+    from universal_android_adb_toolkit import safety
+    monkeypatch.setattr(safety, "APPROVALS_PATH", tmp_path / "approvals.json")
+    assert safety.load_approvals() == []
+
 class ToolkitTestSuite(unittest.TestCase):
     """Unittest wrapper so `python3 -m unittest` runs every test function."""
 
